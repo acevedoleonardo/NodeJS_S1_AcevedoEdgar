@@ -1,17 +1,20 @@
-const { MongoClient, ObjectId } = require('mongodb');
-const readline = require('readline-sync');
-require('dotenv').config();
+// Importacion de modulos 
 
+const { MongoClient, ObjectId } = require('mongodb'); //Permite conectar y manipular una base de datos en mongodb 
+const readline = require('readline-sync'); //Permite leerdatos desde la consola de forma interactiva. 
+require('dotenv').config(); //Permite cargar variables de entorno. 
+
+// La configuracion de conexion 
 const uri = 'mongodb+srv://NodeJS:NodeJS@cluster0.jy2o2v3.mongodb.net/'; // o desde process.env.MONGO_URI
 const client = new MongoClient(uri);
-const dbName = 'crud_console';
-const collectionName = 'users';
+const dbName = 'Node_js'; // Nombre de la base de datos 
+const collectionName = 'Campuslands'; // Nombre de la coleccion 
 
 async function main() {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const users = db.collection(collectionName);
+    const Campuslands = db.collection(collectionName);
 
     let running = true;
 
@@ -29,15 +32,16 @@ async function main() {
         case '1': {
           const name = readline.question('Nombre: ');
           const email = readline.questionEMail('Email: ');
-          await users.insertOne({ name, email });
+          const telefono = readline.question('Telefono: ');
+          await Campuslands.insertOne({ name, email, telefono });
           console.log('Usuario creado.');
           break;
         }
         case '2': {
-          const allUsers = await users.find().toArray();
+          const allUsers = await Campuslands.find().toArray();
           console.log('\nUsuarios:');
-          allUsers.forEach(user => {
-            console.log(`${user._id}: ${user.name} - ${user.email}`);
+          allUsers.forEach(Campuslands => {
+            console.log(`${Campuslands._id}: ${Campuslands.name} - ${Campuslands.email} - ${Campuslands.telefono} `);
           });
           break;
         }
@@ -45,16 +49,16 @@ async function main() {
           const id = readline.question('ID del usuario a actualizar: ');
           const name = readline.question('Nuevo nombre: ');
           const email = readline.questionEMail('Nuevo email: ');
-          const result = await users.updateOne(
+          const result = await Campuslands.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { name, email } }
+            { $set: { name, email, telefeno } }
           );
           console.log(result.modifiedCount ? 'Usuario actualizado.' : 'Usuario no encontrado.');
           break;
         }
         case '4': {
           const id = readline.question('ID del usuario a eliminar: ');
-          const result = await users.deleteOne({ _id: new ObjectId(id) });
+          const result = await Campuslands.deleteOne({ _id: new ObjectId(id) });
           console.log(result.deletedCount ? 'Usuario eliminado.' : 'Usuario no encontrado.');
           break;
         }
