@@ -25,6 +25,7 @@ contexto.
 const CuentaBancaria = require('./models/CuentaBancaria');
 const Persona = require ('./models/Persona');
 const Perro = require ('./models/Perro');
+const Gato = require('./models/Gato');
 const pedro = new Persona('Pedro',25);
 pedro.saludar(); 
 
@@ -36,3 +37,5 @@ console.log(cuenta.verSaldo())//1500
 const animal1 = new Perro("Paco");
 animal1.hablar();
 
+const animal2 = new Gato("Mechas");
+animal2.hablar();
